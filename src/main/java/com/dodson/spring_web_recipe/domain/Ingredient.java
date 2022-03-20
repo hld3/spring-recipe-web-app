@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Ingredient {
@@ -16,6 +17,9 @@ public class Ingredient {
     private Long id;
     private String description;
     private BigDecimal amount;
+
+    @OneToOne()
+    private UnitOfMeasure unitOfMeasure;
 
     @ManyToOne
     private Recipe recipe;
