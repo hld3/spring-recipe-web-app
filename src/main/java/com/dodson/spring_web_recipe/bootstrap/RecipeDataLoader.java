@@ -71,7 +71,7 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
         guacCategories.add(american);
         guacCategories.add(mexican);
 
-        guacamole.setDescription("This is some guacamole that is supposedly perfect");
+        guacamole.setDescription("Guacamole");
         guacamole.setPreptime(10);
         guacamole.setCookTime(0);
         guacamole.setServings(4);
@@ -102,7 +102,11 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
         tacoIngredients.add(new Ingredient("Orange Zest", new BigDecimal(1), tbsp, chickenTacos));
         tacoIngredients.add(new Ingredient("Boneless Chicken Thighs", new BigDecimal(1.25), lbs, chickenTacos));
 
-        chickenTacos.setDescription("Spicy grilled chicken tacos!");
+        Set<Category> tacoCategories = chickenTacos.getCategories();
+        tacoCategories.add(american);
+        tacoCategories.add(mexican);
+
+        chickenTacos.setDescription("Chicken Tacos");
         chickenTacos.setPreptime(20);
         chickenTacos.setCookTime(15);
         chickenTacos.setServings(6);
