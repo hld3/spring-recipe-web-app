@@ -58,14 +58,13 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
         guacNotes.setRecipeNotes("Be careful handling chilis! If using, it's best to wear food-safe gloves. If no gloves are available, wash your hands thoroughly after handling, and do not touch your eyes or the area near your eyes for several hours afterwards.");
 
         // guacamole ingredients
-        Set<Ingredient> guacIngredients = guacamole.getIngredients();
-        guacIngredients.add(new Ingredient("Avocado", new BigDecimal(2), item, guacamole));
-        guacIngredients.add(new Ingredient("Salt", new BigDecimal(1.4), tsp, guacamole));
-        guacIngredients.add(new Ingredient("Lime", new BigDecimal(1), tbsp, guacamole));
-        guacIngredients.add(new Ingredient("Red Onion", new BigDecimal(2), tbsp, guacamole));
-        guacIngredients.add(new Ingredient("Serrano", new BigDecimal(2), item, guacamole));
-        guacIngredients.add(new Ingredient("Selantro", new BigDecimal(2), tbsp, guacamole));
-        guacIngredients.add(new Ingredient("Black Pepper", new BigDecimal(1), pinch, guacamole));
+        guacamole.addIngredient(new Ingredient("Avocado", new BigDecimal(2), item));
+        guacamole.addIngredient(new Ingredient("Salt", new BigDecimal(1.4), tsp));
+        guacamole.addIngredient(new Ingredient("Lime", new BigDecimal(1), tbsp));
+        guacamole.addIngredient(new Ingredient("Red Onion", new BigDecimal(2), tbsp));
+        guacamole.addIngredient(new Ingredient("Serrano", new BigDecimal(2), item));
+        guacamole.addIngredient(new Ingredient("Selantro", new BigDecimal(2), tbsp));
+        guacamole.addIngredient(new Ingredient("Black Pepper", new BigDecimal(1), pinch));
 
         Set<Category> guacCategories = guacamole.getCategories();
         guacCategories.add(american);
@@ -92,15 +91,14 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
         chickenTacoNotes.setRecipeNotes("Look for ancho chile powder with the Mexican ingredients at your grocery store, on buy it online. (If you can't find ancho chili powder, you replace the ancho chili, the oregano, and the cumin with 2 1/2 tablespoons regular chili powder, though the flavor won't be quite the same.");
 
         // chicken taco ingredients
-        Set<Ingredient> tacoIngredients = chickenTacos.getIngredients();
-        tacoIngredients.add(new Ingredient("Chili Powder", new BigDecimal(2), tbsp, chickenTacos));
-        tacoIngredients.add(new Ingredient("Oregano", new BigDecimal(1), tsp, chickenTacos));
-        tacoIngredients.add(new Ingredient("Cumin", new BigDecimal(1), tsp, chickenTacos));
-        tacoIngredients.add(new Ingredient("Sugar", new BigDecimal(1), tsp, chickenTacos));
-        tacoIngredients.add(new Ingredient("Salt", new BigDecimal(.5), tsp, chickenTacos));
-        tacoIngredients.add(new Ingredient("Garlic Clove", new BigDecimal(1), item, chickenTacos));
-        tacoIngredients.add(new Ingredient("Orange Zest", new BigDecimal(1), tbsp, chickenTacos));
-        tacoIngredients.add(new Ingredient("Boneless Chicken Thighs", new BigDecimal(1.25), lbs, chickenTacos));
+        chickenTacos.addIngredient(new Ingredient("Chili Powder", new BigDecimal(2), tbsp));
+        chickenTacos.addIngredient(new Ingredient("Oregano", new BigDecimal(1), tsp));
+        chickenTacos.addIngredient(new Ingredient("Cumin", new BigDecimal(1), tsp));
+        chickenTacos.addIngredient(new Ingredient("Sugar", new BigDecimal(1), tsp));
+        chickenTacos.addIngredient(new Ingredient("Salt", new BigDecimal(.5), tsp));
+        chickenTacos.addIngredient(new Ingredient("Garlic Clove", new BigDecimal(1), item));
+        chickenTacos.addIngredient(new Ingredient("Orange Zest", new BigDecimal(1), tbsp));
+        chickenTacos.addIngredient(new Ingredient("Boneless Chicken Thighs", new BigDecimal(1.25), lbs));
 
         Set<Category> tacoCategories = chickenTacos.getCategories();
         tacoCategories.add(american);
