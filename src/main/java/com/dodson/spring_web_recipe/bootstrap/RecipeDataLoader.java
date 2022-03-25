@@ -24,7 +24,6 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
     private final RecipeRepository recipeRepository;
     private final CategoryRepository categoryRepository;
 
-
     public RecipeDataLoader(UnitOfMeasureRepository unitOfMeasureRepository, RecipeRepository recipeRepository, CategoryRepository categoryRepository) {
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.recipeRepository = recipeRepository;
