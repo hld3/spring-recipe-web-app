@@ -8,7 +8,10 @@ import com.dodson.spring_web_recipe.repositories.RecipeRepository;
 
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class RecipeServiceImpl implements RecipeService {
     
     private RecipeRepository recipeRepository;
@@ -20,6 +23,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Set<Recipe> getRecipes() {
+        log.debug("Retrieving recipes");
         Set<Recipe> recipes = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
         return (Set<Recipe>) recipes;
