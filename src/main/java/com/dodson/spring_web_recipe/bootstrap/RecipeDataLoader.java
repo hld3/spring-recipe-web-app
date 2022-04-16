@@ -16,6 +16,7 @@ import com.dodson.spring_web_recipe.repositories.UnitOfMeasureRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -31,6 +32,7 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
         loadRecipes();
     }
