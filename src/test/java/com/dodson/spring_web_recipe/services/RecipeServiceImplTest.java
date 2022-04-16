@@ -1,11 +1,14 @@
 package com.dodson.spring_web_recipe.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 import com.dodson.spring_web_recipe.domain.Recipe;
@@ -38,5 +41,22 @@ public class RecipeServiceImplTest {
 
         assertEquals(1, recipes.size());
         verify(recipeRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void getRecipesById() {
+
+        var expectedId = 1l;
+        var recipe = new Recipe();
+        recipe.setId(expectedId) ;
+        var rOptional = Optional.of(recipe);
+
+        when(recipeRepository.findById(expectedId)).thenReturn(rOptional);
+
+        var recipeReturned = recipeService.findById(expectedId);
+
+        assertNotNull(recipeReturned, "Null recipe returned");
+        verify(recipeRepository, times(1)).findById(expectedId);
+        verify(recipeRepository, never()).findAll();
     }
 }

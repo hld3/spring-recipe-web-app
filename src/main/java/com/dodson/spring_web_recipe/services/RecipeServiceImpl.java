@@ -23,9 +23,15 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Set<Recipe> getRecipes() {
-        log.debug("Retrieving recipes");
+        log.debug("Retrieving all recipes");
         Set<Recipe> recipes = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
         return (Set<Recipe>) recipes;
+    }
+
+    public Recipe findById(long id) {
+
+        var rOptional = recipeRepository.findById(id);
+        return rOptional.orElse(null);
     }
 }
