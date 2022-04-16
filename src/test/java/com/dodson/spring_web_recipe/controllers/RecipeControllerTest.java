@@ -2,6 +2,7 @@ package com.dodson.spring_web_recipe.controllers;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -42,6 +43,7 @@ public class RecipeControllerTest {
 
         mockMvc.perform(get("/recipe/show/" + recipeId))
             .andExpect(status().isOk())
-            .andExpect(view().name("recipe/show"));
+            .andExpect(view().name("recipe/show"))
+            .andExpect(model().attributeExists("recipe"));
     }
 }
