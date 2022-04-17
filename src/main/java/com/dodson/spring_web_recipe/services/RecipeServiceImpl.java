@@ -3,6 +3,11 @@ package com.dodson.spring_web_recipe.services;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
+import com.dodson.spring_web_recipe.commands.RecipeCommand;
+import com.dodson.spring_web_recipe.converters.RecipeCommandToRecipe;
+import com.dodson.spring_web_recipe.converters.RecipeToRecipeCommand;
 import com.dodson.spring_web_recipe.domain.Recipe;
 import com.dodson.spring_web_recipe.repositories.RecipeRepository;
 
@@ -14,12 +19,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RecipeServiceImpl implements RecipeService {
     
-    private RecipeRepository recipeRepository;
+    private final RecipeRepository recipeRepository;
+    private final RecipeCommandToRecipe recipeCommandToRecipe;
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
 
-
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
         this.recipeRepository = recipeRepository;
-    }
+        this.recipeCommandToRecipe = recipeCommandToRecipe;
+        this.recipeToRecipeCommand = recipeToRecipeCommand;
+    }    
 
     @Override
     public Set<Recipe> getRecipes() {
@@ -33,5 +41,15 @@ public class RecipeServiceImpl implements RecipeService {
 
         var rOptional = recipeRepository.findById(id);
         return rOptional.orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
+        Recipe detachedRecipe = recipeCommandToRecipe.convert(recipeCommand);
+
+        Recipe savedRecipe = recipeRepository.save(detachedRecipe);
+        log.debug("Saved recipe of id: " + savedRecipe.getId());
+        return recipeToRecipeCommand.convert(savedRecipe);
     }
 }

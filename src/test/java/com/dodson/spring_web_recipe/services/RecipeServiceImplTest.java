@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
+import com.dodson.spring_web_recipe.converters.RecipeCommandToRecipe;
+import com.dodson.spring_web_recipe.converters.RecipeToRecipeCommand;
 import com.dodson.spring_web_recipe.domain.Recipe;
 import com.dodson.spring_web_recipe.repositories.RecipeRepository;
 
@@ -26,10 +28,16 @@ public class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
     
     @Test
