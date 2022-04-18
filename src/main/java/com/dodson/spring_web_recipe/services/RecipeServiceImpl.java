@@ -40,7 +40,11 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe findById(long id) {
 
         var rOptional = recipeRepository.findById(id);
-        return rOptional.orElse(null);
+
+        if(!rOptional.isPresent()) {
+            throw new RuntimeException("No recipe found with id: " + id);
+        }
+        return rOptional.get();
     }
 
     @Override
@@ -51,5 +55,11 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe savedRecipe = recipeRepository.save(detachedRecipe);
         log.debug("Saved recipe of id: " + savedRecipe.getId());
         return recipeToRecipeCommand.convert(savedRecipe);
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand findCommandById(Long id) {
+        return recipeToRecipeCommand.convert(findById(id));
     }
 }
