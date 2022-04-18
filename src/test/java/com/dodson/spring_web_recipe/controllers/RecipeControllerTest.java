@@ -41,7 +41,7 @@ public class RecipeControllerTest {
 
         when(recipeService.findById(recipeId)).thenReturn(recipe);
 
-        mockMvc.perform(get("/recipe/show/" + recipeId))
+        mockMvc.perform(get("/recipe/" + recipeId + "/show"))
             .andExpect(status().isOk())
             .andExpect(view().name("recipe/show"))
             .andExpect(model().attributeExists("recipe"));
