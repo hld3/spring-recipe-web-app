@@ -1,5 +1,6 @@
 package com.dodson.spring_web_recipe.controllers;
 
+import com.dodson.spring_web_recipe.services.IngredientService;
 import com.dodson.spring_web_recipe.services.RecipeService;
 
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 public class IngredientController {
 
     private final RecipeService recipeService;
+    private final IngredientService ingredientService;
 
-    public IngredientController(RecipeService recipeService) {
+    public IngredientController(RecipeService recipeService, IngredientService ingredientService) {
         this.recipeService = recipeService;
-    }
+        this.ingredientService = ingredientService;
+    }    
 
     @GetMapping("/recipe/{id}/ingredients")
     public String listIngredients(@PathVariable String id, Model model) {
@@ -25,5 +28,12 @@ public class IngredientController {
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
 
         return "recipe/ingredients/list";
+    }
+
+    @GetMapping("/recipe/{recipeId}/ingredient/{id}/show")
+    public String showRecipeIngredient(@PathVariable String recipeId,
+                                       @PathVariable String id, Model model){
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
+        return "recipe/ingredients/show";
     }
 }
