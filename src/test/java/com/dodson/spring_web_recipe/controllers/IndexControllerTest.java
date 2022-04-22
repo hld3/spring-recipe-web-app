@@ -1,120 +1,79 @@
 package com.dodson.spring_web_recipe.controllers;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.HashSet;
+import java.util.Set;
 
-import com.dodson.spring_web_recipe.commands.IngredientCommand;
-import com.dodson.spring_web_recipe.commands.RecipeCommand;
-import com.dodson.spring_web_recipe.services.IngredientService;
+import com.dodson.spring_web_recipe.domain.Recipe;
 import com.dodson.spring_web_recipe.services.RecipeService;
-import com.dodson.spring_web_recipe.services.UnitOfMeasureService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.ui.Model;
 
 public class IndexControllerTest {
     
     @Mock
-    IngredientService ingredientService;
-
-    @Mock
-    UnitOfMeasureService unitOfMeasureService;
-
-    @Mock
     RecipeService recipeService;
 
-    IndexController indexController;
+    @Mock
+    Model model;
 
-    MockMvc mockMvc;
+    IndexController controller;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        indexController = new IndexController(recipeService);
-        mockMvc = MockMvcBuilders.standaloneSetup(indexController).build();
+
+        controller = new IndexController(recipeService);
     }
 
     @Test
-    public void testListIngredients() throws Exception {
-        //given
-        RecipeCommand recipeCommand = new RecipeCommand();
-        when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
+    public void testMockMVC() throws Exception {
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
-        //when
-        mockMvc.perform(get("/recipe/1/ingredients"))
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("recipe/ingredient/list"))
-                .andExpect(model().attributeExists("recipe"));
-
-        //then
-        verify(recipeService, times(1)).findCommandById(anyLong());
+                .andExpect(view().name("index"));
     }
 
     @Test
-    public void testShowIngredient() throws Exception {
+    public void getIndexPage() throws Exception {
+
         //given
-        IngredientCommand ingredientCommand = new IngredientCommand();
+        Set<Recipe> recipes = new HashSet<>();
+        recipes.add(new Recipe());
+
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+
+        recipes.add(recipe);
+
+        when(recipeService.getRecipes()).thenReturn(recipes);
+
+        ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
-        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
+        String viewName = controller.getIndexPage(model);
 
         //then
-        mockMvc.perform(get("/recipe/1/ingredient/2/show"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("recipe/ingredient/show"))
-                .andExpect(model().attributeExists("ingredient"));
-    }
-
-    @Test
-    public void testUpdateIngredientForm() throws Exception {
-        //given
-        IngredientCommand ingredientCommand = new IngredientCommand();
-
-        //when
-        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
-        when(unitOfMeasureService.listAllMeasurements()).thenReturn(new HashSet<>());
-
-        //then
-        mockMvc.perform(get("/recipe/1/ingredient/2/update"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("recipe/ingredient/ingredientform"))
-                .andExpect(model().attributeExists("ingredient"))
-                .andExpect(model().attributeExists("uomList"));
-    }
-
-    @Test
-    public void testSaveOrUpdate() throws Exception {
-        //given
-        IngredientCommand command = new IngredientCommand();
-        command.setId(3L);
-        command.setRecipeId(2L);
-
-        //when
-        when(ingredientService.saveIngredientCommand(any())).thenReturn(command);
-
-        //then
-        mockMvc.perform(post("/recipe/2/ingredient")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "")
-                .param("description", "some string")
-        )
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/recipe/2/ingredient/3/show"));
-
+        assertEquals("index", viewName);
+        verify(recipeService, times(1)).getRecipes();
+        verify(model, times(1)).addAttribute(eq("recipes"), argumentCaptor.capture());
+        Set<Recipe> setInController = argumentCaptor.getValue();
+        assertEquals(2, setInController.size());
     }
 }

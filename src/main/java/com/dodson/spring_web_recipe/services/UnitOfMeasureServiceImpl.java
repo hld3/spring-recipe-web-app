@@ -8,6 +8,9 @@ import com.dodson.spring_web_recipe.commands.UnitOfMeasureCommand;
 import com.dodson.spring_web_recipe.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import com.dodson.spring_web_recipe.repositories.UnitOfMeasureRepository;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class UnitOfMeasureServiceImpl implements UnitOfMeasureService {
 
     private final UnitOfMeasureRepository unitOfMeasureRepository;
