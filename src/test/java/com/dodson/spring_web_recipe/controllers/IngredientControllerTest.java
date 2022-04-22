@@ -13,6 +13,7 @@ import com.dodson.spring_web_recipe.commands.IngredientCommand;
 import com.dodson.spring_web_recipe.commands.RecipeCommand;
 import com.dodson.spring_web_recipe.services.IngredientService;
 import com.dodson.spring_web_recipe.services.RecipeService;
+import com.dodson.spring_web_recipe.services.UnitOfMeasureService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,13 +32,16 @@ public class IngredientControllerTest {
     @Mock
     IngredientService ingredientService;
 
+    @Mock
+    UnitOfMeasureService unitOfMeasureService;
+
     IngredientController controller;
 
     MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {
-        controller = new IngredientController(recipeService ,ingredientService);
+        controller = new IngredientController(recipeService ,ingredientService, unitOfMeasureService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
