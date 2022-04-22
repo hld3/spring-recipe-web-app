@@ -18,6 +18,7 @@ import com.dodson.spring_web_recipe.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,6 +32,9 @@ public class IndexControllerTest {
 
     @Mock
     Model model;
+
+    @Captor
+    ArgumentCaptor<Set<Recipe>> argumentCaptor;
 
     IndexController controller;
 
@@ -63,8 +67,6 @@ public class IndexControllerTest {
         recipes.add(recipe);
 
         when(recipeService.getRecipes()).thenReturn(recipes);
-
-        ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
         String viewName = controller.getIndexPage(model);
