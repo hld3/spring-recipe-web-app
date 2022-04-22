@@ -52,7 +52,8 @@ public class IngredientController {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
 
         model.addAttribute("uomList", unitOfMeasureService.listAllMeasurements());
-        return "recipe/ingredients/ingredientform";
+
+        return "recipe/ingredients/ingredientForm";
     }
 
     @PostMapping("/recipe/{recipeId}/ingredient")
@@ -62,7 +63,7 @@ public class IngredientController {
         log.debug("saved receipe id:" + savedCommand.getRecipeId());
         log.debug("saved ingredient id:" + savedCommand.getId());
 
-        return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredients/" + savedCommand.getId() + "/show";
+        return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
     }
     
 }
