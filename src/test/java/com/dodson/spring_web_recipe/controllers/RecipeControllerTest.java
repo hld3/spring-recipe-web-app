@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.dodson.spring_web_recipe.commands.RecipeCommand;
 import com.dodson.spring_web_recipe.domain.Recipe;
+import com.dodson.spring_web_recipe.exceptions.NotFoundException;
 import com.dodson.spring_web_recipe.services.RecipeService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +53,15 @@ public class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    public void testGetRecipeNotFound() throws Exception {
+
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/11/show"))
+                .andExpect(status().isNotFound());
     }
 
     @Test

@@ -9,6 +9,7 @@ import com.dodson.spring_web_recipe.commands.RecipeCommand;
 import com.dodson.spring_web_recipe.converters.RecipeCommandToRecipe;
 import com.dodson.spring_web_recipe.converters.RecipeToRecipeCommand;
 import com.dodson.spring_web_recipe.domain.Recipe;
+import com.dodson.spring_web_recipe.exceptions.NotFoundException;
 import com.dodson.spring_web_recipe.repositories.RecipeRepository;
 
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class RecipeServiceImpl implements RecipeService {
         var rOptional = recipeRepository.findById(id);
 
         if(!rOptional.isPresent()) {
-            throw new RuntimeException("No recipe found with id: " + id);
+            throw new NotFoundException("No recipe found with id: " + id);
         }
         return rOptional.get();
     }
