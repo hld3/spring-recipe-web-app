@@ -28,6 +28,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @ExtendWith(MockitoExtension.class)
 public class RecipeControllerTest {
     
+    // Validator validator;
+
     @Mock
     RecipeService recipeService;
 
@@ -39,6 +41,9 @@ public class RecipeControllerTest {
     public void setUp() throws Exception {
         controller = new RecipeController(recipeService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        // ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        // validator = factory.getValidator();
     }
 
     @Test
@@ -92,9 +97,26 @@ public class RecipeControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("id", "")
                 .param("description", "some string")
+                .param("directions", "the directions")
         )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/2/show"));
+    }
+
+    @Test
+    public void testPostNewRecipeFormValidationFail() throws Exception {
+        RecipeCommand command = new RecipeCommand();
+        command.setId(2L);
+
+        when(recipeService.saveRecipeCommand(any())).thenReturn(command);
+
+        mockMvc.perform(post("/recipe")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", ""))
+                
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("recipe"))
+                .andExpect(view().name("recipe/recipeForm"));
     }
 
     @Test
