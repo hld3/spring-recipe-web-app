@@ -28,8 +28,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @ExtendWith(MockitoExtension.class)
 public class RecipeControllerTest {
     
-    // Validator validator;
-
     @Mock
     RecipeService recipeService;
 
@@ -40,10 +38,9 @@ public class RecipeControllerTest {
     @BeforeEach
     public void setUp() throws Exception {
         controller = new RecipeController(recipeService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-
-        // ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        // validator = factory.getValidator();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+            .setControllerAdvice(new ControllerExceptionHandler())
+            .build();
     }
 
     @Test
